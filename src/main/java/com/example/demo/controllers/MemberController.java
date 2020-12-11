@@ -28,7 +28,7 @@ public class MemberController {
     @PostMapping("/members/login")
     public Map<?, ?> login(@RequestBody MemberDto member){
         var map = new HashMap<>();
-        MemberDto result = MemberService.login(member);
+        MemberDto result = memberService.login(member);
         if(result != null){
             map.put("message", "SUCCESS");
             map.put("loginMember",result);
