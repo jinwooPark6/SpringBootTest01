@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <h1>Login</h1>
+    <a id="home" href="#">GO HOME</a>
+    <form>
+        <table>
+            <tr>
+                <td>ID</td>
+                <td><input id='memberId' type="text"> </td>
+            </tr>
+            <tr>
+                <td>PW</td>
+                <td><input id='password' type="text"> </td>
+            </tr>
+            <tr>
+                
+                <td colspane='2'>
+                    <button id='login-btn'>로그인</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <script>
+        document.getElementById('home').addEventListener('click', e => {
+            location.href = '/'
+        })
+        document.getElementById('login-btn').addEventListener('click', e => {
+            e.preventDefault()
+            $.ajax({
+                url: '/members/login',
+                type: 'POST',
+                data: JSON.stringify({
+                    memberId : document.getElementById('memberId').value, 
+                    password: document.getElementById('password').value
+                }),
+                dataType: 'json',
+                contentType: 'application/json',
+                success: d => {
+                    if(d.message !== 'FAILURE'){
+                        alert(`로그인 아이디: ${d.loginMember.memberId}`)
+                        location.href = '/move/members/mypage'
+                    }else{
+                        alert(`아이디와 패스워드 재확인 필요`)
+                        location.href = '/move/members/login'
+                    }
+                },
+                error: e => {
+                    alert(`로그인 에러 ${e}`)
+                }
+            })
+        })
+    </script>
+</body>
+</html>

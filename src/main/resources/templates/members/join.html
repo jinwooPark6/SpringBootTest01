@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <h1>JOIN</h1>
+    <a id = "home" href="#">GO HOME</a>
+    <form>
+        <table>
+            <tr>
+                <td>ID</td>
+                <td id = "memberId" type = "text"></td>
+            </tr>
+            <tr>
+                <td>PW</td>
+                <td id = "password" type = "text"></td>
+            </tr>
+            <tr>
+                <td>Name</td>
+                <td id = "name" type = "text"></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <button id = 'join-btn'>회원가입</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <script>
+        document.getElementById('home').addEventListener('click', e => {
+            location.href = '/'
+        })
+        document.getElementById('join-btn').addEventListener('click', e =>{
+            e.preventDefault()
+            $.ajax({
+                url:'/members',
+                type:'POST',
+                data: JSON.stringify({
+                    memberId : document.getElementById('memberId').value,
+                    password : document.getElementById('password').value,
+                    name : document.getElementById('name').value
+
+                }),
+                dataType : 'json',
+                contentType : 'application.json',
+                success : d => {
+                    if(d.message === SUCCESS){
+                        location.href = '/move/members/login'
+                    }else{
+                        alert(`회원가입 실패`)
+                        location.href = '/move/members/join'
+                    }
+                },
+                error : e => {
+                    alert=(`회원가입 오류 발생: ${e}`)
+                }
+            })
+
+        })
+    </script>
+</body>
+</html>
